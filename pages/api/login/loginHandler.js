@@ -1,14 +1,15 @@
 import nextConnect from 'next-connect';
 
-import { checkBasicAuth } from '../../../lib/middlewares';
-import basicAuthValidator from '../../../validators/basicAuthValidator';
+import { /* checkBasicAuth, */ withSession } from '../../../lib/middlewares';
+// import basicAuthValidator from '../../../validators/basicAuthValidator';
 import loginController from './loginController';
 
 const handler = nextConnect();
 
 handler.post([
-  checkBasicAuth,
-  ...basicAuthValidator,
+  withSession,
+  // checkBasicAuth,
+  // ...basicAuthValidator,
   loginController.login,
 ]);
 

@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { SWRConfig } from 'swr';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseLine from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
+import fetcher from '../lib/fetcher';
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -23,7 +25,16 @@ function MyApp({ Component, pageProps }) {
       <ThemeProvider theme={theme}>
         {/* CssBaseLine kickstart an elegant, consistent and simple baseline to build upon. */}
         <CssBaseLine />
-        <Component {...pageProps} />
+        <SWRConfig
+          value={{
+            fetcher,
+            onError(err) {
+              console.error(err);
+            },
+          }}
+        >
+          <Component {...pageProps} />
+        </SWRConfig>
       </ThemeProvider>
     </>
   );

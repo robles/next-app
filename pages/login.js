@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 // import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,7 +13,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Alert from '@material-ui/lab/Alert';
 import Copyright from '../components/Copyright';
+import useSession from '../hooks/useSession';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue
+  },
+  alert: {
+    width: '100%',
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -35,7 +41,33 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Login() {
+  const [errorMsg, setErrorMsg] = useState('');
+  const { mutateSession } = useSession({
+    redirectTo: '/profile-sg',
+    redirectIfFound: true,
+  });
   const classes = useStyles();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const body = {
+      username: e.currentTarget.email.value,
+      password: e.currentTarget.password.value,
+    };
+
+    try {
+      const { data } = await axios.post('/api/login', body);
+      if (data.isLoggedIn) {
+        await mutateSession(data);
+      } else {
+        setErrorMsg(data.message);
+      }
+    } catch (error) {
+      console.error('An unexpected error happened:', error);
+      // setErrorMsg(error.data.message)
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -47,7 +79,8 @@ function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        {errorMsg && <Alert severity="error" className={classes.alert}>{errorMsg}</Alert>}
+        <form className={classes.form} onSubmit={handleSubmit} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
