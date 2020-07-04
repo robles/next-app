@@ -33,9 +33,9 @@ function SgProfile() {
                 Your profile
               </Typography>
               <Typography variant="body2" color="textSecondary" component="ul">
-                <li>{session.claims.username}</li>
-                <li>{session.claims.firstName}</li>
-                <li>{session.claims.lastName}</li>
+                <li>Email: {session.claims.username}</li>
+                <li>Name: {session.claims.firstName} {session.claims.lastName}</li>
+                <li>Finisher: {session.claims.finisher}</li>
               </Typography>
             </CardContent>
           </CardActionArea>

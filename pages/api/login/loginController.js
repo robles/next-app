@@ -2,20 +2,23 @@ import bearerAuth from '../../../lib/bearerAuth';
 
 const users = [
   {
-    username: 'robles.dave@gmail.com',
-    firstName: 'David',
-    lastName: 'Robles',
+    username: 'mrperfect@email.com',
+    firstName: 'Mr',
+    lastName: 'Perfect',
     password: 'password',
+    finisher: 'Perfect Plex',
   }, {
-    username: 'jim@twocoastsenterprises.com',
-    firstName: 'Jim',
-    lastName: 'Lipo',
+    username: 'jakethesnake@email.com',
+    firstName: 'Jake',
+    lastName: 'Roberts',
     password: 'password',
+    finisher: 'DDT',
   }, {
-    username: 'alipo@crnrstone.com',
-    firstName: 'Andrea',
-    lastName: 'Lipo',
+    username: 'titosantana@email.com',
+    firstName: 'Tito',
+    lastName: 'Santana',
     password: 'password',
+    finisher: 'Flying Forearm',
   },
 ];
 
@@ -32,6 +35,7 @@ const login = async (req, res) => {
           username: user.username,
           firstName: user.firstName,
           lastName: user.lastName,
+          finisher: user.finisher,
         },
         token: bearerAuth.createApiToken({ username: user.username }),
       };
